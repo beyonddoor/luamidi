@@ -9,6 +9,9 @@ local function sort_by_time(array)
     )
 end
 
+---调度任务
+---@param time any 等待时间
+---@param action any callback
 local function schedule(time, action)
     pending[#pending + 1] = {time = time, action = action}
     sort_by_time(pending)
@@ -27,7 +30,9 @@ end
 
 local function run()
     while #pending > 0 do
+        print("pending: " .. #pending)
         while os.clock() < pending[1].time do end -- busy-wait
+        -- coroutine.yield(pending[1].time)
         local item = remove_first(pending)
         local _, seconds = coroutine.resume(item.action)
         if seconds then

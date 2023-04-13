@@ -9,5 +9,13 @@ local function play_song()
     end
 end
 
+local function counter()
+    for i = 1, math.huge do
+        print("counter: " .. i)
+        scheduler.wait(0.01)
+    end
+end
+
 scheduler.schedule(0.0, coroutine.create(play_song))
+scheduler.schedule(0.0, coroutine.create(counter))
 scheduler.run()
